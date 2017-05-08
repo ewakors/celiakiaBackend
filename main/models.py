@@ -4,6 +4,7 @@ from django.db import models
 
 class Category(models.Model):
     name = models.CharField('Name', max_length=255)
+    REQUIRED_FIELDS = ['name']
 
     def __str__(self):
         return self.name
@@ -11,18 +12,19 @@ class Category(models.Model):
 
 class Product(models.Model):
     name = models.CharField('Name', max_length=255)
-    bar_code = models.CharField('Bar code', max_length=255)
-    gluten_free = models.BooleanField(default=False)
-
-    user = models.ManyToManyField(User)
-    category = models.ManyToManyField(Category)
+    bar_code = models.CharField('Bar code', max_length=255,unique=True)
+    gluten_free = models.BooleanField(default=True)
+    user = models.ForeignKey(User, blank=True, null=True, on_delete= models.CASCADE)
+    category = models.ForeignKey(Category, blank=True, null=True, on_delete= models.CASCADE)
+    is_active = models.BooleanField('isActive', default=False)
+    REQUIRED_FIELDS = ['name', 'barcode']
 
     def __str__(self):
         return self.name
 
 
-class User (models.Model):
-    email = models.EmailField('Email',max_length=255,unique=True)
-    username = models.CharField('Login', max_length=255, unique=True)
-    password = models.CharField('Password', max_length=255)
-    REQUIRED_FIELDS = ['username', 'password']
+# class User (models.Model):
+#     email = models.EmailField('Email',max_length=255,unique=True)
+#     username = models.CharField('Login', max_length=255, unique=True)
+#     password = models.CharField('Password', max_length=255)
+#     REQUIRED_FIELDS = ['username', 'password']
