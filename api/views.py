@@ -12,12 +12,14 @@ class CategoryView(generics.ListCreateAPIView):
 
 
 class ProductView(generics.ListCreateAPIView):
+
     serializer_class = ProductSerializer
 
     def get_queryset(self):
         key = self.request.GET.get('key', None)
+        category = self.request.GET.get('category', None)
+        return Product.objects.filter(is_active=True).filter(Q(bar_code=key) | Q(name=key) | Q(category=category))
 
-        return Product.objects.filter(is_active=True).filter(Q(bar_code=key) | Q(name=key))
 
 
 class ProductCreateView(generics.CreateAPIView):
