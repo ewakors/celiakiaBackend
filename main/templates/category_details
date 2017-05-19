@@ -1,0 +1,4 @@
+
+<div >
+    <img src='{{instance.image.url }} '/>
+</div>

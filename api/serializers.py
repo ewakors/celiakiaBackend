@@ -4,6 +4,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 
 from main.models import Product, Category
+from django.contrib.sites.shortcuts import get_current_site
 
 
 
@@ -17,6 +18,11 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = '__all__'
 
+    def get_image(self, instance):
+        site = get_current_site(None)
+        # returning image url if there is an image else blank string
+        return site.domain + instance.image.url if instance.image else ''
+
 
 class ProductCreateSerializer(serializers.ModelSerializer):
     category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())
@@ -25,13 +31,17 @@ class ProductCreateSerializer(serializers.ModelSerializer):
         model = Product
         fields = '__all__'
 
-
-
 class CategorySerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
 
     class Meta:
         model = Category
-        fields = '__all__'
+        fields = ('id', 'name', 'image')
+
+    def get_image(self, instance):
+        site = get_current_site(None)
+        # returning image url if there is an image else blank string
+        return site.domain + instance.image.url if instance.image else ''
 
 #
 #

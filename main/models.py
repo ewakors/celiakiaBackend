@@ -4,6 +4,7 @@ from django.db import models
 
 class Category(models.Model):
     name = models.CharField('Name', max_length=255)
+    image = models.FileField(upload_to='category_images',null=True, blank=True)
     REQUIRED_FIELDS = ['name']
 
     def __str__(self):
@@ -17,6 +18,7 @@ class Product(models.Model):
     user = models.ForeignKey(User, blank=True, null=True, on_delete= models.CASCADE)
     category = models.ForeignKey(Category, blank=True, null=True, on_delete= models.CASCADE)
     is_active = models.BooleanField('isActive', default=False)
+    image = models.FileField(upload_to='product_images', null=True, blank=True)
     REQUIRED_FIELDS = ['name', 'barcode']
 
     def __str__(self):
