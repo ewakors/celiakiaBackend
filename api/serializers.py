@@ -3,9 +3,8 @@ from rest_framework import serializers
 
 from django.contrib.auth.models import User
 
-from main.models import Product, Category
+from main.models import Product, Category, Image
 from django.contrib.sites.shortcuts import get_current_site
-
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -21,7 +20,9 @@ class ProductSerializer(serializers.ModelSerializer):
     def get_image(self, instance):
         site = get_current_site(None)
         # returning image url if there is an image else blank string
-        return site.domain + instance.image.url if instance.image else ''
+        return site.domain + instance.image.url if instance.image else 'none'
+
+        # == 'http://127.0.0.1:8000/media/product_images/breads.png'
 
 
 class ProductCreateSerializer(serializers.ModelSerializer):
@@ -30,6 +31,7 @@ class ProductCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = '__all__'
+
 
 class CategorySerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
@@ -40,10 +42,20 @@ class CategorySerializer(serializers.ModelSerializer):
 
     def get_image(self, instance):
         site = get_current_site(None)
-        # returning image url if there is an image else blank string
         return site.domain + instance.image.url if instance.image else ''
 
+
+class ImageSerializer(serializers.ModelSerializer):
+
+        class Meta:
+            model = Image
+            fields = '__all__'
+
+        def get_image(self, instance):
+            site = get_current_site(None)
+            return site.domain + instance.image.url if instance.image else ''
 #
+
 #
 # class UserSerializer(serializers.ModelSerializer):
 #     username = serializers.CharField(required=True)

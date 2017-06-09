@@ -25,6 +25,13 @@ class Product(models.Model):
         return self.name
 
 
+class Image(models.Model):
+    name = models.CharField('Name', max_length=255)
+    image = models.FileField(upload_to='images', null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
 # class User (models.Model):
 #     email = models.EmailField('Email',max_length=255,unique=True)
 #     username = models.CharField('Login', max_length=255, unique=True)

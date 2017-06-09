@@ -1,10 +1,11 @@
 from rest_framework import generics
 from rest_framework.authentication import BasicAuthentication
 
-from .serializers import ProductSerializer, CategorySerializer, ProductCreateSerializer
-from main.models import Product, Category
+from .serializers import ProductSerializer, CategorySerializer, ProductCreateSerializer, ImageSerializer
+from main.models import Product, Category, Image
 from django.db.models import Q
 from django.contrib.auth.models import User
+
 
 class CategoryView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
@@ -21,15 +22,10 @@ class ProductView(generics.ListCreateAPIView):
         return Product.objects.filter(is_active=True).filter(Q(bar_code=key) | Q(name=key) | Q(category=category))
 
 
-
 class ProductCreateView(generics.CreateAPIView):
     serializer_class = ProductCreateSerializer
 
 
-    # def add_new_product(self,name,bar_code,gluten_free,category):
-    #     product = Product()
-    #     product.name = name
-    #     product.bar_code = bar_code
-    #     product.gluten_free = gluten_free
-    #     product.category = category
-    #     return product
+class ImageView(generics.ListCreateAPIView):
+    queryset = Image.objects.all()
+    serializer_class = ImageSerializer
