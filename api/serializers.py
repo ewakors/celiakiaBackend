@@ -1,9 +1,7 @@
 
 from rest_framework import serializers
 
-from django.contrib.auth.models import User
-
-from main.models import Product, Category, Image
+from main.models import Product, Category
 from django.contrib.sites.shortcuts import get_current_site
 
 
@@ -20,7 +18,7 @@ class ProductSerializer(serializers.ModelSerializer):
     def get_image(self, instance):
         site = get_current_site(None)
         # returning image url if there is an image else blank string
-        return site.domain + instance.image.url if instance.image else 'none'
+        return site.domain + instance.image.url if instance.image else ''
 
         # == 'http://127.0.0.1:8000/media/product_images/breads.png'
 
@@ -45,16 +43,6 @@ class CategorySerializer(serializers.ModelSerializer):
         return site.domain + instance.image.url if instance.image else ''
 
 
-class ImageSerializer(serializers.ModelSerializer):
-
-        class Meta:
-            model = Image
-            fields = '__all__'
-
-        def get_image(self, instance):
-            site = get_current_site(None)
-            return site.domain + instance.image.url if instance.image else ''
-#
 
 #
 # class UserSerializer(serializers.ModelSerializer):

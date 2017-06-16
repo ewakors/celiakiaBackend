@@ -1,8 +1,8 @@
 from rest_framework import generics
 from rest_framework.authentication import BasicAuthentication
 
-from .serializers import ProductSerializer, CategorySerializer, ProductCreateSerializer, ImageSerializer
-from main.models import Product, Category, Image
+from .serializers import ProductSerializer, CategorySerializer, ProductCreateSerializer
+from main.models import Product, Category
 from django.db.models import Q
 from django.contrib.auth.models import User
 
@@ -24,8 +24,3 @@ class ProductView(generics.ListCreateAPIView):
 
 class ProductCreateView(generics.CreateAPIView):
     serializer_class = ProductCreateSerializer
-
-
-class ImageView(generics.ListCreateAPIView):
-    queryset = Image.objects.all()
-    serializer_class = ImageSerializer
