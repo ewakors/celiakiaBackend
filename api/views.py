@@ -19,7 +19,11 @@ class ProductView(generics.ListCreateAPIView):
     def get_queryset(self):
         key = self.request.GET.get('key', None)
         category = self.request.GET.get('category', None)
+
         return Product.objects.filter(is_active=True).filter(Q(bar_code=key) | Q(name=key) | Q(category=category))
+
+        if category is not None:
+            return Product.objects.filter(is_active=True).filter(Q(bar_code=key) | Q(name=key) & Q(category=category))
 
 
 class ProductCreateView(generics.CreateAPIView):
