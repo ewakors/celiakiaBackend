@@ -20,11 +20,13 @@ class ProductView(generics.ListCreateAPIView):
         key = self.request.GET.get('key', None)
         category = self.request.GET.get('category', None)
 
-        return Product.objects.filter(is_active=True).filter(Q(bar_code=key) | Q(name=key) | Q(category=category))
+        products = Product.objects.filter(is_active=True)
 
-        if category is not None:
-            return Product.objects.filter(is_active=True).filter(Q(bar_code=key) | Q(name=key) & Q(category=category))
-
+        if category:
+            products = products.filter(category=category)
+        if key:
+            products = products.filter(name__icontains=key) | products.filter(bar_code__icontains=key)
+        return products
 
 class ProductCreateView(generics.CreateAPIView):
     serializer_class = ProductCreateSerializer
