@@ -1,5 +1,7 @@
-*/.DS_Store
+.DS_Store
 ssh=key
 ssh=key.pub
 db.sqlite3
 .idea
+*.pyc
+__pycache__
