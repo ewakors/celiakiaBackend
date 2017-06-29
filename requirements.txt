@@ -1,0 +1,13 @@
+defusedxml==0.5.0
+-e git://github.com/django/django.git@fd892f3443fe9a35684b7b798a8fe1b07d118e3c#egg=Django
+django-allauth==0.31.0
+django-cors-headers==2.1.0
+django-rest-auth==0.9.1
+djangorestframework==3.6.2
+oauthlib==2.0.2
+python3-openid==3.1.0
+pytz==2017.2
+requests==2.13.0
+requests-oauthlib==0.8.0
+six==1.10.0
+virtualenv==15.1.0
