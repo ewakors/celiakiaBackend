@@ -147,7 +147,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'statics')
 
 
 STATICFILES_DIRS = (os.path.join('static'),)
@@ -155,3 +155,8 @@ STATICFILES_DIRS = (os.path.join('static'),)
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # MEDIA_ROOT = "/media/"
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass
