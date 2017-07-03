@@ -16,12 +16,9 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_image(self, instance):
-        site = get_current_site(None)
+        # site = get_current_site(None)
         # returning image url if there is an image else blank string
-        return site.domain + instance.image.url if instance.image else ''
-
-        # == 'http://127.0.0.1:8000/media/product_images/breads.png'
-
+        return self.context['request'].build_absolute_uri(instance.image.url)
 
 class ProductCreateSerializer(serializers.ModelSerializer):
     category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())
@@ -36,12 +33,11 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ('id', 'name', 'image')
+        fields = '__all__'
 
     def get_image(self, instance):
-        site = get_current_site(None)
-        return site.domain + instance.image.url if instance.image else ''
-
+        # site = get_current_site(None)
+        return self.context['request'].build_absolute_uri(instance.image.url)
 
 
 #
