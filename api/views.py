@@ -3,8 +3,6 @@ from rest_framework.authentication import BasicAuthentication
 
 from .serializers import ProductSerializer, CategorySerializer, ProductCreateSerializer
 from main.models import Product, Category
-from django.db.models import Q
-from django.contrib.auth.models import User
 
 
 class CategoryView(generics.ListCreateAPIView):
@@ -27,6 +25,7 @@ class ProductView(generics.ListCreateAPIView):
         if key:
             products = products.filter(name__icontains=key).order_by('name') | products.filter(bar_code__icontains=key).order_by('name')
         return products
+
 
 class ProductCreateView(generics.CreateAPIView):
     serializer_class = ProductCreateSerializer

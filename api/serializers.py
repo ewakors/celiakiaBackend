@@ -5,7 +5,7 @@ from main.models import Product, Category
 
 
 class ProductSerializer(serializers.ModelSerializer):
-
+    name = serializers.SerializerMethodField()
     user = serializers.StringRelatedField(many=True)
     category = serializers.StringRelatedField()
     image = serializers.SerializerMethodField()
@@ -29,6 +29,9 @@ class ProductSerializer(serializers.ModelSerializer):
             image = settings.STATIC_URL + 'images/gluten.jpg'
         return self.context['request'].build_absolute_uri(image)
 
+    def get_name(self, instance):
+        return instance.name.capitalize()
+
 
 class ProductCreateSerializer(serializers.ModelSerializer):
     category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())
@@ -40,6 +43,7 @@ class ProductCreateSerializer(serializers.ModelSerializer):
 
 class CategorySerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
+    name = serializers.SerializerMethodField()
 
     class Meta:
         model = Category
@@ -47,3 +51,6 @@ class CategorySerializer(serializers.ModelSerializer):
 
     def get_image(self, instance):
         return self.context['request'].build_absolute_uri(instance.image.url)
+
+    def get_name(self, instance):
+        return instance.name.capitalize()

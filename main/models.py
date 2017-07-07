@@ -8,7 +8,7 @@ class Category(models.Model):
     REQUIRED_FIELDS = ['name']
 
     def __str__(self):
-        return self.name.title()
+        return self.name.capitalize()
 
 
 class Product(models.Model):
@@ -22,5 +22,5 @@ class Product(models.Model):
     REQUIRED_FIELDS = ['name', 'barcode']
 
     def __str__(self):
-        return self.name.title()
+        return self.name
 
