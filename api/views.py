@@ -8,12 +8,12 @@ from django.contrib.auth.models import User
 
 
 class CategoryView(generics.ListCreateAPIView):
-    queryset = Category.objects.all()
+    queryset = Category.objects.all().order_by('name')
     serializer_class = CategorySerializer
 
 
 class ProductView(generics.ListCreateAPIView):
-
+    queryset = Product.objects.order_by('name')
     serializer_class = ProductSerializer
 
     def get_queryset(self):
@@ -23,9 +23,9 @@ class ProductView(generics.ListCreateAPIView):
         products = Product.objects.filter(is_active=True)
 
         if category:
-            products = products.filter(category=category)
+            products = products.filter(category=category).order_by('name')
         if key:
-            products = products.filter(name__icontains=key) | products.filter(bar_code__icontains=key)
+            products = products.filter(name__icontains=key).order_by('name') | products.filter(bar_code__icontains=key).order_by('name')
         return products
 
 class ProductCreateView(generics.CreateAPIView):

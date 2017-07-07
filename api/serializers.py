@@ -1,24 +1,34 @@
 
 from rest_framework import serializers
-
+from django.conf import settings
 from main.models import Product, Category
-from django.contrib.sites.shortcuts import get_current_site
 
 
 class ProductSerializer(serializers.ModelSerializer):
 
     user = serializers.StringRelatedField(many=True)
     category = serializers.StringRelatedField()
-    gluten_free = serializers.StringRelatedField(many=False)
+    image = serializers.SerializerMethodField()
+    gluten_free_image = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
         fields = '__all__'
 
     def get_image(self, instance):
-        # site = get_current_site(None)
-        # returning image url if there is an image else blank string
-        return self.context['request'].build_absolute_uri(instance.image.url)
+        if instance.image:
+            image = instance.image.url
+        else:
+            image = settings.STATIC_URL + 'images/znakZap.jpg'
+        return self.context['request'].build_absolute_uri(image)
+
+    def get_gluten_free_image(self, instance):
+        if instance.gluten_free:
+            image = settings.STATIC_URL + 'images/glutenFree.png'
+        else:
+            image = settings.STATIC_URL + 'images/gluten.jpg'
+        return self.context['request'].build_absolute_uri(image)
+
 
 class ProductCreateSerializer(serializers.ModelSerializer):
     category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())
@@ -36,26 +46,4 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_image(self, instance):
-        # site = get_current_site(None)
         return self.context['request'].build_absolute_uri(instance.image.url)
-
-
-#
-# class UserSerializer(serializers.ModelSerializer):
-#     username = serializers.CharField(required=True)
-#     password = serializers.CharField(style={'input_type': 'password'})
-#
-#     def _validate_username(self, username, password):
-#         user = None
-#
-#         if username and password:
-#             user = authenticate(username=username, password=password)
-#         else:
-#             msg = _('Must include "username" and "password".')
-#             raise exceptions.ValidationError(msg)
-#
-#         return user
-#
-#     class Meta:
-#         model = User
-#         fields = ("username", "password")
