@@ -1,5 +1,4 @@
 **/.DS_Store
-media/**
 ssh=key
 ssh=key.pub
 db.sqlite3
